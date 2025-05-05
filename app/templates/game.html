@@ -16,25 +16,26 @@
     <div class="container mx-auto p-6">
         <!-- Header Section -->
         <div class="container mx-auto p-6">
-            <!-- Header Section -->
             <div class="flex justify-between items-center mb-8">
-                <!-- Logo -->
-                <div style="margin-left: 4;"></div>
-                    <img src="/static/logo.png" alt="Logo" class="h-12">
-                </div>
-                <!-- Admin Button -->
-                <div>
-                    <a href="{{ url_for('main.admin') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg text-lg font-semibold hover:bg-blue-600">
-                        Admin
-                    </a>
-                </div>
+            <!-- Logo -->
+            <div class="flex items-center space-x-4">
+                <img src="/static/logo.png" alt="Logo" class="h-12">
+                <h1 class="text-2xl font-bold text-white">Slide Roulette</h1>
             </div>
+            <!-- Admin Button -->
+            <div>
+                <a href="{{ url_for('main.admin') }}" class="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 shadow-md transition duration-300 sm:px-6 sm:py-2 sm:text-lg">
+                Admin
+                </a>
+            </div>
+            </div>
+        </div>
 
         <!-- Main Content -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Game Area -->
             <div id="game-area" class="flex flex-col items-center ">
-                <img id="slide" class="sm:h-[70vh] h-[40vh] rounded-lg mb-6" src="/static/uploads/{{ images[0].url }}" alt="Slide" />
+                <img id="slide" class="lg:h-[70vh] h-[40vh] rounded-lg mb-6" src="/static/uploads/{{ images[0].url }}" alt="Slide" />
                 <button id="next-slide" class="bg-green-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-600">
                     Next Slide
                 </button>
@@ -48,7 +49,7 @@
                     <input id="word-count-slider" type="range" min="1" max="5" value="3" class="w-full">
                     <div id="word-count-display" class="text-center text-lg font-bold">3</div>
                 </div>
-                <ul id="words-list" class="text-center text-4xl md:text-6xl font-bold text-gray-700 flex flex-col justify-center sm:mt-8"></ul>
+                <ul id="words-list" class="text-center text-4xl lg:text-6xl font-bold text-gray-700 flex flex-col justify-center sm:mt-8"></ul>
                     <!-- Words will be dynamically inserted here -->
                 </ul>
             </div>

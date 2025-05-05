@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide Roulette Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gradient-to-r from-gray-600 to-gray-900 flex items-center justify-center min-h-screen text-white">
+    <div class="container mx-auto p-6">
+        <!-- Header Section -->
+        <div class="container mx-auto p-6">
+            <!-- Header Section -->
+            <div class="flex justify-between items-center mb-8">
+                <!-- Logo -->
+                <div style="margin-left: 4;"></div>
+                    <img src="/static/logo.png" alt="Logo" class="h-12">
+                </div>
+                <!-- Admin Button -->
+                <div>
+                    <a href="{{ url_for('main.admin') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg text-lg font-semibold hover:bg-blue-600">
+                        Admin
+                    </a>
+                </div>
+            </div>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Game Area -->
+            <div id="game-area" class="flex flex-col items-center ">
+                <img id="slide" class="sm:h-[70vh] h-[40vh] rounded-lg mb-6" src="/static/uploads/{{ images[0].url }}" alt="Slide" />
+                <button id="next-slide" class="bg-green-500 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-600">
+                    Next Slide
+                </button>
+            </div>
+            
+
+            <!-- Words Section -->
+            <div class="bg-white shadow-lg rounded-lg p-6 text-gray-800">
+                <div class="">
+                    <label for="word-count-slider" class="block text-gray-700 font-semibold">Number of Words:</label>
+                    <input id="word-count-slider" type="range" min="1" max="5" value="3" class="w-full">
+                    <div id="word-count-display" class="text-center text-lg font-bold">3</div>
+                </div>
+                <ul id="words-list" class="text-center text-4xl md:text-6xl font-bold text-gray-700 flex flex-col justify-center sm:mt-8"></ul>
+                    <!-- Words will be dynamically inserted here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script>
+        const images = JSON.parse('{{ images|tojson }}');
+        const words = JSON.parse('{{ words|tojson }}');
+        let currentImageIndex = 0;
+        let wordCount = 3; // Default word count
+    
+        // Function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    
+        // Shuffle the images array
+        shuffleArray(images);
+    
+        // Set the first image to a random one
+        currentImageIndex = Math.floor(Math.random() * images.length);
+    
+        // Function to load random words
+        function loadRandomWords() {
+            const wordsList = document.getElementById('words-list');
+            wordsList.innerHTML = ''; // Clear the list
+            const randomWords = words.sort(() => 0.5 - Math.random()).slice(0, wordCount);
+            randomWords.forEach(word => {
+                const li = document.createElement('li');
+                li.textContent = word.text;
+                wordsList.appendChild(li);
+            });
+        }
+    
+        // Load initial random words
+        loadRandomWords();
+    
+        // Set the initial image
+        document.getElementById('slide').src = `/static/uploads/${images[currentImageIndex].url}`;
+    
+        document.getElementById('next-slide').addEventListener('click', () => {
+            // Update the image
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            document.getElementById('slide').src = `/static/uploads/${images[currentImageIndex].url}`;
+    
+            // Load new random words
+            loadRandomWords();
+        });
+
+        // Update word count when slider changes
+        const wordCountSlider = document.getElementById('word-count-slider');
+        const wordCountDisplay = document.getElementById('word-count-display');
+        wordCountSlider.addEventListener('input', () => {
+            wordCount = parseInt(wordCountSlider.value, 10);
+            wordCountDisplay.textContent = wordCount;
+            loadRandomWords(); // Reload words with the new count
+        });
+    </script>    
+</body>
+</html>
